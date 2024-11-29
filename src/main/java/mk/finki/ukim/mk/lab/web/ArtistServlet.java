@@ -15,18 +15,18 @@
 //import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 //
 //import java.io.IOException;
-//import java.util.List;
 //
-//@WebServlet(urlPatterns = "/artistList")
-//public class ArtistListServlet extends HttpServlet {
+//
+//@WebServlet (urlPatterns = "/artist")
+//public class ArtistServlet extends HttpServlet {
 //    private final ArtistService artistService;
+//    private final SpringTemplateEngine templateEngine;
 //    private final SongService songService;
-//    private final SpringTemplateEngine templateEngine;;
 //
-//    public ArtistListServlet(ArtistService artistService, SongService songService, SpringTemplateEngine templateEngine) {
+//    public ArtistServlet(ArtistService artistService, SpringTemplateEngine templateEngine, SongService songService) {
 //        this.artistService = artistService;
-//        this.songService = songService;
 //        this.templateEngine = templateEngine;
+//        this.songService = songService;
 //    }
 //
 //    @Override
@@ -35,18 +35,19 @@
 //                .buildApplication(getServletContext())
 //                .buildExchange(req, resp);
 //        WebContext context = new WebContext(webExchange);
-//        List<Artist> artistList = this.artistService.listArtists();
-//        context.setVariable("artistList", artistList);
-//
-//        this.templateEngine.process("realArtistsList.html", context, resp.getWriter());
+//        Long trackId = Long.parseLong(req.getSession().getAttribute("selectedSong").toString());
+//        context.setVariable("trackId", trackId);
+//        context.setVariable("artists", this.artistService.listArtists());
+//        this.templateEngine.process("artistsList.html", context, resp.getWriter());
 //    }
 //
 //    @Override
 //    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        String trackId = req.getSession().getAttribute("selectedSong").toString();
 //        Long artistId = Long.parseLong(req.getParameter("selectedArtist"));
+//        Song song = this.songService.findByTrackId(trackId).get();
 //        Artist artist = this.artistService.findById(artistId);
-//        req.getSession().setAttribute("songs", this.songService.findNamesByArtist(artist));
-//        req.getSession().setAttribute("artistId", artistId);
-//        resp.sendRedirect("/artistDetails?id=" + artistId);
+//        this.songService.addArtistToSong(artist, song);
+//        resp.sendRedirect("/songDetails?trackId=" + trackId);
 //    }
 //}
