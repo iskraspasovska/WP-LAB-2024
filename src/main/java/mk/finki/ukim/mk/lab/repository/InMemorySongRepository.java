@@ -23,15 +23,15 @@ public class InMemorySongRepository {
     }
 
     public Artist addArtistToSong(Artist artist, Song song) {
-        if(song.getPerformers().contains(artist)) {return artist;}
+        if(song.getArtists().contains(artist)) {return artist;}
         Song song1 = DataHolder.songs.stream().filter(s-> s.getTrackId().equals(song.getTrackId())).findFirst().get();
 
-        song1.getPerformers().add(artist);
+        song1.getArtists().add(artist);
         return artist;
     }
 
     public List<String> findNamesByArtistId(Artist artist) {
-        List <Song> songs = DataHolder.songs.stream().filter(s -> s.getPerformers().contains(artist)).toList();
+        List <Song> songs = DataHolder.songs.stream().filter(s -> s.getArtists().contains(artist)).toList();
         List<String> names = new ArrayList<>();
         songs.forEach(song -> {names.add(song.getTitle());});
         return names;

@@ -12,11 +12,13 @@ public interface SongService {
     List<Song> listSongs();
     Artist addArtistToSong(Artist artist, Song song);
     public Optional<Song> findByTrackId(String trackId);
-    List<String> findNamesByArtist(Artist artist);
+    //List<String> findNamesByArtist(Artist artist);
     void saveSong(Long trackId, String title, String genre, String releaseDate, String albumId);
     Optional<Song> findById(Long id);
 
     void deleteById(Long id);
 
     void update(Long songId, Long trackId, String title, String genre, String releaseDate, String albumId);
+
+    List<Song> findAllByAlbumId(Long albumId);
 }

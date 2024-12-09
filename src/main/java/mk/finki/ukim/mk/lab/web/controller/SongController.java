@@ -28,6 +28,7 @@ public class SongController {
             model.addAttribute("error", error);
         }
         model.addAttribute("songs", this.songService.listSongs());
+        model.addAttribute("albums", this.albumService.findAll());
         return "listSongs";
     }
 
@@ -51,6 +52,19 @@ public class SongController {
         } else {
             return "redirect:/songs";
         }
+    }
+
+    @GetMapping("/album/{id}")
+    public String selectAlbum(@PathVariable Long id, Model model){
+        if (this.albumService.findById(id).isPresent()) {
+            Album album = albumService.findById(id).get();
+            model.addAttribute("album", album);
+
+            List<Song> songs = songService.findAllByAlbumId(album.getId());
+            model.addAttribute("songs", songs);
+            return "album-songs";
+        }
+        return "redirect:/song?error=SongNotFound";
     }
 
     @PostMapping("/add")
@@ -88,7 +102,7 @@ public class SongController {
         return "redirect:/song?error=SongNotFound";
     }
 
-    @DeleteMapping("/delete/{id}")
+    @PostMapping("/delete/{id}")
     public String deleteSong(@PathVariable Long id){
         if(this.songService.findById(id).isPresent()){
             this.songService.deleteById(id);

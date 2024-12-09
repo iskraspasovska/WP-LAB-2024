@@ -14,6 +14,7 @@
     <h1>Welcome to My Music Store</h1>
 </header>
 <main>
+    <a th:href="@{'/songs/add-form'}">Add a new song</a>
     <h2>Choose a song to add artist:</h2>
     <!-- Display radio buttons for each song,
             the value should be the trackId
@@ -22,7 +23,7 @@
         <ul>
             <li th:each="song : ${songs}">
                 <label>
-                    <input type="radio" th:name="'selectedSong'" th:value="${song.id}" />
+                    <input type="radio" th:name="'selectedSong'" th:value="${song.id}"/>
                     Title: <span th:text="${song.title}"></span><br>
                     Genre: <span th:text="${song.genre}"></span><br>
                     Release Year: <span th:text="${song.releaseYear}"></span><br>
@@ -37,20 +38,29 @@
     <ul>
         <li th:each="song1 : ${songs}">
             <form th:action="@{'/songs/delete/{id}'(id=${song1.getId()})}"
-                  th:method="delete">
-                <input type="hidden" th:name="'songId'" th:value="${song1.id}" />
+                  th:method="post">
+                <input type="hidden" th:name="'songId'" th:value="${song1.id}"/>
                 <h3>Title: <span th:text="${song1.title}"></span><br>
                     Genre: <span th:text="${song1.genre}"></span><br>
                     Release Year: <span th:text="${song1.releaseYear}"></span><br>
                     Album: <span th:text="${song1.album.getName()}"></span><br>
                     <a th:href="@{'/songs/edit/{id}'(id=${song1.getId()})}">Edit</a>
-                    <button type="submit" >Delete</button>
+                    <button type="submit">Delete</button>
                 </h3>
             </form>
-        </li>>
+        </li>
     </ul>
 
-    <a th:href="@{'/songs/add-form'}">Add a new song</a>
+    <h2>All albums:</h2>
+    <ul>
+        <li th:each="album : ${albums}">
+            <input type="hidden" th:name="'albumId'" th:value="${album.id}"/>
+            <h3>Title: <span th:text="${album.getName()}"></span><br>
+                <a th:href="@{'/songs/album/{id}'(id=${album.getId()})}">See Songs</a>
+            </h3>
+        </li>
+    </ul>
+
 </main>
 </body>
 </html>
